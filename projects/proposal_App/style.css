@@ -13,6 +13,9 @@ body{
     align-items: center;
     
 }
+#audio {
+  display: none; /* Hides the default audio player */
+}
 .container{
     
     display: flex;
@@ -34,7 +37,15 @@ body{
     border-radius: 5px;
     border-style: none;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow */
+    transition: transform 0.2s; 
+    
   }
+  .buttons button:hover {
+    cursor: pointer;
+}
+.buttons button:active {
+  transform: scale(0.9); /* Scale down when button is clicked */
+}
 
   .emoji img{
     height: 150px;
@@ -47,4 +58,6 @@ body{
     font-size: 20px;
     font-weight:500;
   }
-  
+  .hidden-buttons {
+    display: none;
+}

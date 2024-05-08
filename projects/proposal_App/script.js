@@ -4,21 +4,19 @@ function navigateToPage(pageURL) {
 // Get the 'NO' button
 // Get the 'NO' button
 // Get the 'NO' button
-const noButton = document.getElementById('noButton');
+const noButton = document.getElementById('noButton'); //const-->left (ap)
 
 // Function to move the 'NO' button to a random position within the viewport
 function moveNoButton() {
     // Calculate random positions within the viewport bounds
-    const maxX = window.innerWidth - noButton.offsetWidth;
-    const maxY = window.innerHeight - noButton.offsetHeight;
-
-    const newX = Math.random() * maxX;
-    const newY = Math.random() * maxY;
-
+    const newX = Math.random() * 90;
+    const newY = Math.random() * 90;
+    console.log(newX);
+    console.log(newY);
     // Set new positions
-    noButton.style.left = newX + 'px';
-    noButton.style.top = newY + 'px';
+    noButton.style.position ='absolute';
+    noButton.style.left = newX + 'vw';
+    noButton.style.top = newY + 'vh';
 }
-
 // Add event listener for click event
 noButton.addEventListener('click', moveNoButton);

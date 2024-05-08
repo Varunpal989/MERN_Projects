@@ -7,23 +7,25 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <audio id="background-music" autoplay loop>
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+      
     <div class="container">
         <div class="emoji">
-            
-          <img src="bubu-dudu-bubu-dudu-fat.gif" alt="">
+            <img src="bubu-dudu-bubu-dudu-fat.gif" alt="">
         </div>
         <h1><pre>Manja na! kitna bhav khaegi 😭 </pre></h1>
         <p class="statement">boht galat baat hai 😥</p>
         <div class="buttons">
             <button onclick="navigateToPage('Yes.html')">YES</button>
-            <button id="noButton">NO</button>
+            <button id="noButton" onclick="handleNoButtonClick()">NO</button>
+        </div>
+        <div id="hiddenNoButton" class="hidden-buttons">
+            <button onclick="handleNoButtonHover()">NO</button>
         </div>
     </div>
     
-    
-   
-    
     <script src="script.js"></script>
-   
 </body>
 </html>
