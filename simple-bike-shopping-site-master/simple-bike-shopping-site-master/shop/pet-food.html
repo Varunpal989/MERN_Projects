@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Food & Nutrition</title>
+    <link rel="stylesheet" href="../style.css"> <!-- Link to your main CSS -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+        .selection {
+            margin: 40px 0;
+            text-align: center;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .food-tips {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .food-tips h2 {
+            text-align: center;
+            color: #555;
+        }
+        .tips-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .tips-list li {
+            padding: 10px;
+            background-color: #e9ecef;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pet Food & Nutrition</h1>
+        <div class="selection">
+            <label for="food-pet">Choose Your Pet Type:</label>
+            <select id="food-pet">
+                <option value="">Select a pet type</option>
+                <option value="dog">Dog</option>
+                <option value="cat">Cat</option>
+                <option value="rabbit">Rabbit</option>
+                <option value="turtle">Turtle</option>
+            </select>
+        </div>
+
+        <div class="food-tips" id="food-tips">
+            <h2>Food Tips</h2>
+            <ul class="tips-list" id="food-list"></ul>
+        </div>
+    </div>
+
+    <script>
+        const foodPetSelect = document.getElementById('food-pet');
+        const foodTipsDiv = document.getElementById('food-tips');
+        const foodList = document.getElementById('food-list');
+
+        const foodTipsOptions = {
+            dog: ['High-quality kibble', 'Fresh vegetables', 'Lean meats'],
+            cat: ['Wet food for hydration', 'High protein diet', 'Limited carbohydrates'],
+            rabbit: ['Fresh hay daily', 'Vegetables like carrots', 'Limited pellets'],
+            turtle: ['Leafy greens', 'Commercial turtle food', 'Occasional protein']
+        };
+
+        foodPetSelect.addEventListener('change', function () {
+            const selectedType = this.value;
+            foodList.innerHTML = ''; // Clear previous tips
+            foodTipsDiv.style.display = 'none'; // Hide food tips initially
+
+            if (selectedType) {
+                const tips = foodTipsOptions[selectedType];
+                tips.forEach(tip => {
+                    const li = document.createElement('li');
+                    li.textContent = tip;
+                    foodList.appendChild(li);
+                });
+                foodTipsDiv.style.display = 'block'; // Show food tips
+            }
+        });
+    </script>
+</body>
+</html>

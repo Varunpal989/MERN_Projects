@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health & Wellness</title>
+    <link rel="stylesheet" href="../style.css"> <!-- Link to your main CSS -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+        .selection {
+            margin: 40px 0;
+            text-align: center;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .wellness-tips {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .wellness-tips h2 {
+            text-align: center;
+            color: #555;
+        }
+        .tips-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .tips-list li {
+            padding: 10px;
+            background-color: #e9ecef;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Health & Wellness</h1>
+        <div class="selection">
+            <label for="wellness-pet">Choose Your Pet Type:</label>
+            <select id="wellness-pet">
+                <option value="">Select a pet type</option>
+                <option value="dog">Dog</option>
+                <option value="cat">Cat</option>
+                <option value="rabbit">Rabbit</option>
+                <option value="turtle">Turtle</option>
+            </select>
+        </div>
+
+        <div class="wellness-tips" id="wellness-tips">
+            <h2>Health Tips</h2>
+            <ul class="tips-list" id="tips-list"></ul>
+        </div>
+    </div>
+
+    <script>
+        const wellnessPetSelect = document.getElementById('wellness-pet');
+        const wellnessTipsDiv = document.getElementById('wellness-tips');
+        const tipsList = document.getElementById('tips-list');
+
+        const wellnessOptions = {
+            dog: [
+                'Regular vet check-ups.',
+                'Daily exercise is essential.',
+                'Provide a balanced diet.'
+            ],
+            cat: [
+                'Ensure fresh water is always available.',
+                'Regular grooming to reduce shedding.',
+                'Provide scratching posts.'
+            ],
+            rabbit: [
+                'Fresh hay is crucial for their diet.',
+                'Provide a safe space for them to exercise.',
+                'Regular vet visits for dental health.'
+            ],
+            turtle: [
+                'Maintain proper water temperature.',
+                'Provide UVB lighting for health.',
+                'Feed a balanced diet with pellets and greens.'
+            ]
+        };
+
+        wellnessPetSelect.addEventListener('change', function () {
+            const selectedType = this.value;
+            tipsList.innerHTML = ''; // Clear previous tips
+            wellnessTipsDiv.style.display = 'none'; // Hide tips initially
+
+            if (selectedType) {
+                const tips = wellnessOptions[selectedType];
+                tips.forEach(tip => {
+                    const li = document.createElement('li');
+                    li.textContent = tip;
+                    tipsList.appendChild(li);
+                });
+                wellnessTipsDiv.style.display = 'block'; // Show tips
+            }
+        });
+    </script>
+</body>
+</html>

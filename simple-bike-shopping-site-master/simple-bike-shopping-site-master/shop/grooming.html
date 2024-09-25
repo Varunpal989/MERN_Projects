@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grooming & Care</title>
+    <link rel="stylesheet" href="../style.css"> <!-- Link to your main CSS -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+        .selection {
+            margin: 40px 0;
+            text-align: center;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .grooming-tips {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .grooming-tips h2 {
+            text-align: center;
+            color: #555;
+        }
+        .tips-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .tips-list li {
+            padding: 10px;
+            background-color: #e9ecef;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Grooming & Care</h1>
+        <div class="selection">
+            <label for="grooming-pet">Choose Your Pet Type:</label>
+            <select id="grooming-pet">
+                <option value="">Select a pet type</option>
+                <option value="dog">Dog</option>
+                <option value="cat">Cat</option>
+                <option value="rabbit">Rabbit</option>
+                <option value="turtle">Turtle</option>
+            </select>
+        </div>
+
+        <div class="grooming-tips" id="grooming-tips">
+            <h2>Grooming Tips</h2>
+            <ul class="tips-list" id="grooming-list"></ul>
+        </div>
+    </div>
+
+    <script>
+        const groomingPetSelect = document.getElementById('grooming-pet');
+        const groomingTipsDiv = document.getElementById('grooming-tips');
+        const groomingList = document.getElementById('grooming-list');
+
+        const groomingOptions = {
+            dog: [
+                'Brush your dog regularly to prevent matting.',
+                'Keep nails trimmed to avoid discomfort.',
+                'Regular baths to keep their coat healthy.'
+            ],
+            cat: [
+                'Brush fur to reduce shedding and hairballs.',
+                'Clean ears and check for wax buildup.',
+                'Trim nails regularly to prevent scratching.'
+            ],
+            rabbit: [
+                'Brush fur to prevent matting.',
+                'Check their teeth and trim if necessary.',
+                'Clean their living area regularly.'
+            ],
+            turtle: [
+                'Regularly clean the tank.',
+                'Check shell for any signs of issues.',
+                'Ensure proper diet to maintain health.'
+            ]
+        };
+
+        groomingPetSelect.addEventListener('change', function () {
+            const selectedType = this.value;
+            groomingList.innerHTML = ''; // Clear previous tips
+            groomingTipsDiv.style.display = 'none'; // Hide tips initially
+
+            if (selectedType) {
+                const tips = groomingOptions[selectedType];
+                tips.forEach(tip => {
+                    const li = document.createElement('li');
+                    li.textContent = tip;
+                    groomingList.appendChild(li);
+                });
+                groomingTipsDiv.style.display = 'block'; // Show tips
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collars, Leashes & Apparel</title>
+    <link rel="stylesheet" href="../style.css"> <!-- Link to your main CSS -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+        .selection {
+            margin: 40px 0;
+            text-align: center;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .apparel-suggestions {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .apparel-suggestions h2 {
+            text-align: center;
+            color: #555;
+        }
+        .suggestions-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .suggestions-list li {
+            padding: 10px;
+            background-color: #e9ecef;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Collars, Leashes & Apparel</h1>
+        <div class="selection">
+            <label for="apparel-pet">Choose Your Pet Type:</label>
+            <select id="apparel-pet">
+                <option value="">Select a pet type</option>
+                <option value="dog">Dog</option>
+                <option value="cat">Cat</option>
+                <option value="rabbit">Rabbit</option>
+                <option value="turtle">Turtle</option>
+            </select>
+        </div>
+
+        <div class="apparel-suggestions" id="apparel-suggestions">
+            <h2>Apparel Suggestions</h2>
+            <ul class="suggestions-list" id="suggestions-list"></ul>
+        </div>
+    </div>
+
+    <script>
+        const apparelPetSelect = document.getElementById('apparel-pet');
+        const apparelSuggestionsDiv = document.getElementById('apparel-suggestions');
+        const suggestionsList = document.getElementById('suggestions-list');
+
+        const apparelOptions = {
+            dog: ['Leather collars', 'Reflective leashes', 'Winter jackets'],
+            cat: ['Breakaway collars', 'Soft leashes', 'Cat sweaters'],
+            rabbit: ['Harnesses for outdoor', 'Lightweight collars', 'Bunny costumes'],
+            turtle: ['Aquatic-themed collars', 'Small harnesses', 'Cooling vests']
+        };
+
+        apparelPetSelect.addEventListener('change', function () {
+            const selectedType = this.value;
+            suggestionsList.innerHTML = ''; // Clear previous suggestions
+            apparelSuggestionsDiv.style.display = 'none'; // Hide suggestions initially
+
+            if (selectedType) {
+                const suggestions = apparelOptions[selectedType];
+                suggestions.forEach(suggestion => {
+                    const li = document.createElement('li');
+                    li.textContent = suggestion;
+                    suggestionsList.appendChild(li);
+                });
+                apparelSuggestionsDiv.style.display = 'block'; // Show suggestions
+            }
+        });
+    </script>
+</body>
+</html>
