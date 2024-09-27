@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog Varieties</title>
+    <style>
+        /* CSS Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #333;
+        }
+        
+        .pet-card {
+            display: inline-block;
+            width: 25%;
+            margin: 10px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .pet-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .pet-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        
+        .pet-card h2 {
+            margin: 20px 0 10px;
+            font-size: 24px;
+            color: #555;
+        }
+        
+        .pet-card p {
+            font-size: 16px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Dog Varieties</h1>
+        <div id="dogs-list">
+            <!-- Dog varieties will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle the data and dynamic rendering of the dogs
+        const dogs = [
+    {
+        name: 'Golden Retriever',
+        image: 'animals/golden-retriever.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Friendly, Intelligent, Devoted.'
+    },
+    {
+        name: 'German Shepherd',
+        image: 'animals/german-shepherd.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Confident, Courageous, Smart.'
+    },
+    {
+        name: 'Poodle',
+        image: 'animals/poodle.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Active, Proud, Very Smart.'
+    },
+    {
+        name: 'Bulldog',
+        image: 'animals/bulldog.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Docile, Willful, Friendly.'
+    },
+    {
+        name: 'Labrador Retriever',
+        image: 'animals/labrador-retriever.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Friendly, Outgoing, Gentle.'
+    },
+    {
+        name: 'Beagle',
+        image: 'animals/beagle.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Curious, Merry, Friendly.'
+    },
+    {
+        name: 'Boxer',
+        image: 'animals/boxer.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Fun-Loving, Bright, Active.'
+    },
+    {
+        name: 'Dachshund',
+        image: 'animals/dachshund.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Curious, Spirited, Stubborn.'
+    },
+    {
+        name: 'Rottweiler',
+        image: 'animals/rottweiler.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Confident, Fearless, Good-natured.'
+    },
+    {
+        name: 'Siberian Husky',
+        image: 'animals/siberian-husky.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Friendly, Mischievous, Loyal.'
+    }
+];
+
+
+        // Function to generate HTML for each dog and append it to the page
+        function renderDogs() {
+            const dogList = document.getElementById('dogs-list');
+            dogs.forEach(dog => {
+                const dogCard = document.createElement('div');
+                dogCard.classList.add('pet-card');
+                dogCard.innerHTML = `
+                    <img src="${dog.image}" alt="${dog.name}">
+                    <h2>${dog.name}</h2>
+                    <p>${dog.description}</p>
+                `;
+                dogList.appendChild(dogCard);
+            });
+        }
+
+        // Call the function to render the dogs when the page loads
+        renderDogs();
+    </script>
+
+</body>
+</html>

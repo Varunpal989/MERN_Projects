@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Varieties</title>
+    <style>
+        /* CSS Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #333;
+        }
+        
+        .pet-card {
+            display: inline-block;
+            width: 25%;
+            margin: 10px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .pet-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .pet-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        
+        .pet-card h2 {
+            margin: 20px 0 10px;
+            font-size: 24px;
+            color: #555;
+        }
+        
+        .pet-card p {
+            font-size: 16px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Cat Varieties</h1>
+        <div id="cats-list">
+            <!-- Cat varieties will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle the data and dynamic rendering of the cats
+        const cats = [
+    {
+        name: 'Persian Cat',
+        image: 'animals/persian-cat.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Quiet, affectionate, with a long coat.'
+    },
+    {
+        name: 'Siamese Cat',
+        image: 'animals/siamese-cat.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Social, talkative, with short hair.'
+    },
+    {
+        name: 'Maine Coon',
+        image: 'animals/maine-coon.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Large, playful, with a thick fur coat.'
+    },
+    {
+        name: 'Ragdoll',
+        image: 'animals/ragdoll.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Gentle, relaxed, with striking blue eyes.'
+    },
+    {
+        name: 'British Shorthair',
+        image: 'animals/british-shorthair.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Easygoing, calm, with a dense coat.'
+    },
+    {
+        name: 'Bengal Cat',
+        image: 'animals/bengal-cat.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Energetic, playful, with a spotted coat.'
+    },
+    {
+        name: 'Sphynx Cat',
+        image: 'animals/sphynx-cat.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Hairless, friendly, and loves attention.'
+    },
+    {
+        name: 'Scottish Fold',
+        image: 'animals/scottish-fold.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Calm, affectionate, with folded ears.'
+    },
+    {
+        name: 'Abyssinian Cat',
+        image: 'animals/abyssinian-cat.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Curious, active, with a short coat.'
+    }
+];
+
+
+        // Function to generate HTML for each cat and append it to the page
+        function renderCats() {
+            const catList = document.getElementById('cats-list');
+            cats.forEach(cat => {
+                const catCard = document.createElement('div');
+                catCard.classList.add('pet-card');
+                catCard.innerHTML = `
+                    <img src="${cat.image}" alt="${cat.name}">
+                    <h2>${cat.name}</h2>
+                    <p>${cat.description}</p>
+                `;
+                catList.appendChild(catCard);
+            });
+        }
+
+        // Call the function to render the cats when the page loads
+        renderCats();
+    </script>
+
+</body>
+</html>

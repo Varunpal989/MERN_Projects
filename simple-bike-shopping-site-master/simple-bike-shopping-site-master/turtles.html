@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turtle Varieties</title>
+    <style>
+        /* CSS Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #333;
+        }
+        
+        .pet-card {
+            display: inline-block;
+            width: 30%;
+            margin: 10px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .pet-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .pet-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        
+        .pet-card h2 {
+            margin: 20px 0 10px;
+            font-size: 24px;
+            color: #555;
+        }
+        
+        .pet-card p {
+            font-size: 16px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Turtle Varieties</h1>
+        <div id="turtles-list">
+            <!-- Turtle varieties will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle the data and dynamic rendering of the turtles
+        const turtles = [
+    {
+        name: 'Red-Eared Slider',
+        image: 'animals/red-eared-slider.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Popular, semi-aquatic, with red markings near ears.'
+    },
+    {
+        name: 'Painted Turtle',
+        image: 'animals/painted-turtle.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Colorful, active, enjoys basking in the sun.'
+    },
+    {
+        name: 'Box Turtle',
+        image: 'animals/box-turtle.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Terrestrial, with a domed shell and hinged plastron.'
+    },
+    {
+        name: 'Russian Tortoise',
+        image: 'animals/russian-tortoise.jpg',  // Replace with actual image URL
+        description: 'Breed Information: Hardy, easy to care for, prefers dry environments.'
+    }
+];
+
+
+        // Function to generate HTML for each turtle and append it to the page
+        function renderTurtles() {
+            const turtleList = document.getElementById('turtles-list');
+            turtles.forEach(turtle => {
+                const turtleCard = document.createElement('div');
+                turtleCard.classList.add('pet-card');
+                turtleCard.innerHTML = `
+                    <img src="${turtle.image}" alt="${turtle.name}">
+                    <h2>${turtle.name}</h2>
+                    <p>${turtle.description}</p>
+                `;
+                turtleList.appendChild(turtleCard);
+            });
+        }
+
+        // Call the function to render the turtles when the page loads
+        renderTurtles();
+    </script>
+
+</body>
+</html>
