@@ -63,7 +63,6 @@
             border-radius: 8px;
             text-align: center;
             transition: transform 0.3s ease;
-            cursor: pointer;
         }
         
         .pet-card:hover {
@@ -85,6 +84,16 @@
         .pet-card p {
             font-size: 16px;
             color: #777;
+        }
+
+        .button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
         }
 
         .quantity-controls {
@@ -126,7 +135,7 @@
                 <!-- Cart items will be dynamically inserted here -->
             </ul>
             <div class="checkout">
-                <button onclick="checkout()">Checkout</button>
+                <button class="button" onclick="checkout()">Checkout</button>
             </div>
         </div>
 
@@ -216,8 +225,8 @@
                     <h2>${dog.name}</h2>
                     <p>${dog.description}</p>
                     <p>₹${dog.price.toLocaleString()}</p>
+                    <button class="button" onclick="addToCart(${index})">Add to Cart</button>
                 `;
-                dogCard.addEventListener('click', () => addToCart(index));  // Add to cart on click
                 dogList.appendChild(dogCard);
             });
         }
@@ -261,7 +270,7 @@
                         <button onclick="updateQuantity(${index}, -1)">-</button>
                         <span>${dog.quantity}</span>
                         <button onclick="updateQuantity(${index}, 1)">+</button>
-                        <button onclick="removeFromCart(${index})">Remove</button>
+                        <button class="button" onclick="removeFromCart(${index})">Remove</button>
                     </div>
                 `;
                 cartItems.appendChild(cartItem);
@@ -274,11 +283,11 @@
                 alert('Your cart is empty.');
             } else {
                 alert('Proceeding to checkout!');
-                // Custom logic for checkout (e.g., redirect to a new page)
+                // Custom checkout logic here
             }
         }
 
-        // Call the function to render the dogs when the page loads
+        // Initial render
         renderDogs();
     </script>
 

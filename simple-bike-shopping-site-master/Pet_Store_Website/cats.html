@@ -12,7 +12,7 @@
             padding: 0;
             background-color: #f4f4f4;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 50px auto;
@@ -21,7 +21,7 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        
+
         h1 {
             text-align: center;
             margin-bottom: 40px;
@@ -30,28 +30,14 @@
 
         /* Cart Section */
         .cart {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .cart h2 {
-            margin: 0 0 10px;
-        }
-
-        .cart ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .cart ul li {
-            padding: 10px 0;
-            border-bottom: 1px solid #ddd;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
         }
 
         .pet-card {
@@ -64,214 +50,176 @@
             border-radius: 8px;
             text-align: center;
             transition: transform 0.3s ease;
-            cursor: pointer;
         }
-        
+
         .pet-card:hover {
             transform: scale(1.05);
         }
-        
+
         .pet-card img {
             width: 100%;
             height: auto;
             border-radius: 8px;
         }
-        
+
         .pet-card h2 {
             margin: 20px 0 10px;
             font-size: 24px;
             color: #555;
         }
-        
+
         .pet-card p {
             font-size: 16px;
             color: #777;
         }
 
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-        }
-
-        .quantity-controls button {
-            margin: 0 5px;
-            padding: 5px;
-            background-color: #ddd;
-            border: none;
-            cursor: pointer;
-        }
-
-        /* Checkout Button */
-        .checkout {
-            margin-top: 20px;
-            text-align: right;
-        }
-
-        .checkout button {
-            padding: 10px 20px;
+        /* Add to Cart Button */
+        .button {
+            padding: 10px 15px;
             background-color: #28a745;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* Cart Item Styles */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 5px 0;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Cart Section -->
+        <h1>Cat Varieties</h1>
+        
         <div class="cart">
-            <h2>Cart</h2>
-            <ul id="cart-items">
-                <!-- Cart items will be dynamically inserted here -->
-            </ul>
-            <div class="checkout">
-                <button onclick="checkout()">Checkout</button>
-            </div>
+            <h2>Shopping Cart</h2>
+            <div id="cart-items"></div>
+            <div id="total-price">Total: ₹0</div>
+            <button id="checkout-btn" class="button">Checkout</button>
         </div>
 
-        <h1>Cat Varieties</h1>
         <div id="cats-list">
             <!-- Cat varieties will be dynamically inserted here -->
         </div>
     </div>
 
     <script>
-        // Cat data
+        // JavaScript to handle the data and dynamic rendering of the cats
         const cats = [
             {
                 name: 'Persian Cat',
                 image: 'animals/persian-cat.jpg',
                 description: 'Breed Information: Quiet, affectionate, with a long coat.',
-                price: 50000  // Price in INR
+                price: '₹50,000'
             },
             {
                 name: 'Siamese Cat',
                 image: 'animals/siamese-cat.jpg',
                 description: 'Breed Information: Social, talkative, with short hair.',
-                price: 60000  // Price in INR
+                price: '₹60,000'
             },
             {
                 name: 'Maine Coon',
                 image: 'animals/maine-coon.jpg',
                 description: 'Breed Information: Large, playful, with a thick fur coat.',
-                price: 70000  // Price in INR
+                price: '₹70,000'
             },
             {
                 name: 'Ragdoll',
                 image: 'animals/ragdoll.jpg',
                 description: 'Breed Information: Gentle, relaxed, with striking blue eyes.',
-                price: 75000  // Price in INR
+                price: '₹75,000'
             },
             {
                 name: 'British Shorthair',
                 image: 'animals/british-shorthair.jpg',
                 description: 'Breed Information: Easygoing, calm, with a dense coat.',
-                price: 55000  // Price in INR
+                price: '₹55,000'
             },
             {
                 name: 'Bengal Cat',
                 image: 'animals/bengal-cat.jpg',
                 description: 'Breed Information: Energetic, playful, with a spotted coat.',
-                price: 85000  // Price in INR
-            },
-            {
-                name: 'Sphynx Cat',
-                image: 'animals/sphynx-cat.jpg',
-                description: 'Breed Information: Hairless, friendly, and loves attention.',
-                price: 90000  // Price in INR
-            },
-            {
-                name: 'Scottish Fold',
-                image: 'animals/scottish-fold.jpg',
-                description: 'Breed Information: Calm, affectionate, with folded ears.',
-                price: 60000  // Price in INR
-            },
-            {
-                name: 'Abyssinian Cat',
-                image: 'animals/abyssinian-cat.jpg',
-                description: 'Breed Information: Curious, active, with a short coat.',
-                price: 65000  // Price in INR
+                price: '₹85,000'
             }
         ];
 
-        // Cart array to store added items with quantity
-        let cart = [];
+        const cart = {};
 
-        // Function to render cats
+        // Function to generate HTML for each cat and append it to the page
         function renderCats() {
             const catList = document.getElementById('cats-list');
-            catList.innerHTML = '';  // Clear the list before rendering
-            cats.forEach((cat, index) => {
+            cats.forEach(cat => {
                 const catCard = document.createElement('div');
                 catCard.classList.add('pet-card');
                 catCard.innerHTML = `
                     <img src="${cat.image}" alt="${cat.name}">
                     <h2>${cat.name}</h2>
                     <p>${cat.description}</p>
-                    <p>₹${cat.price.toLocaleString()}</p>
+                    <p>${cat.price}</p>
+                    <button class="button" onclick="addToCart('${cat.name}', '${cat.price}')">Add to Cart</button>
                 `;
-                catCard.addEventListener('click', () => addToCart(index));  // Add to cart on click
                 catList.appendChild(catCard);
             });
         }
 
         // Function to add a cat to the cart
-        function addToCart(index) {
-            const cat = cats[index];
-            const existingItem = cart.find(item => item.name === cat.name);
-            
-            if (existingItem) {
-                existingItem.quantity += 1;
+        function addToCart(name, price) {
+            if (!cart[name]) {
+                cart[name] = { price, quantity: 1 };
             } else {
-                cart.push({ ...cat, quantity: 1 });
+                cart[name].quantity++;
             }
-            renderCart();
+            updateCart();
+        }
+
+        // Function to update the cart display
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            cartItems.innerHTML = ''; // Clear existing items
+            let total = 0;
+
+            for (const name in cart) {
+                const item = cart[name];
+                total += parseInt(item.price.replace('₹', '').replace(',', ''), 10) * item.quantity;
+
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `
+                    ${name} (₹${item.price}) x ${item.quantity} 
+                    <button class="button" onclick="removeFromCart('${name}')">Remove</button>
+                `;
+                cartItems.appendChild(cartItem);
+            }
+
+            document.getElementById('total-price').innerText = `Total: ₹${total}`;
         }
 
         // Function to remove a cat from the cart
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            renderCart();
-        }
-
-        // Function to change the quantity of a cat in the cart
-        function updateQuantity(index, change) {
-            if (cart[index].quantity + change > 0) {
-                cart[index].quantity += change;
-            }
-            renderCart();
-        }
-
-        // Function to render the cart
-        function renderCart() {
-            const cartItems = document.getElementById('cart-items');
-            cartItems.innerHTML = '';  // Clear the list before rendering
-            cart.forEach((cat, index) => {
-                const cartItem = document.createElement('li');
-                cartItem.innerHTML = `
-                    ${cat.name} - ₹${(cat.price * cat.quantity).toLocaleString()} 
-                    <div class="quantity-controls">
-                        <button onclick="updateQuantity(${index}, -1)">-</button>
-                        <span>${cat.quantity}</span>
-                        <button onclick="updateQuantity(${index}, 1)">+</button>
-                        <button onclick="removeFromCart(${index})">Remove</button>
-                    </div>
-                `;
-                cartItems.appendChild(cartItem);
-            });
-        }
-
-        // Function to handle checkout (you can customize this)
-        function checkout() {
-            if (cart.length === 0) {
-                alert('Your cart is empty.');
-            } else {
-                alert('Proceeding to checkout!');
-                // Custom logic for checkout (e.g., redirect to a new page)
+        function removeFromCart(name) {
+            if (cart[name]) {
+                cart[name].quantity--;
+                if (cart[name].quantity <= 0) {
+                    delete cart[name];
+                }
+                updateCart();
             }
         }
+
+        // Checkout function
+        document.getElementById('checkout-btn').onclick = function() {
+            alert('Thank you for your purchase!');
+            // Here you can add more checkout logic if needed
+            cart = {}; // Clear the cart
+            updateCart();
+        };
 
         // Call the function to render the cats when the page loads
         renderCats();

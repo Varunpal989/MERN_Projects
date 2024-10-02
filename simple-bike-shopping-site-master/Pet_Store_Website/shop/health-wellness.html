@@ -22,43 +22,57 @@
             margin-top: 20px;
             color: #333;
         }
-        .selection {
+        .selection, .breed-selection, .product-selection, .cart {
             margin: 40px 0;
             text-align: center;
         }
-        select {
+        select, button {
             padding: 10px;
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            margin: 10px;
         }
-        .wellness-tips {
-            display: none;
-            margin-top: 20px;
+        .product-item {
+            display: inline-block;
+            width: 30%;
+            margin: 10px;
             padding: 20px;
             background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .wellness-tips h2 {
+            border: 1px solid #ddd;
+            border-radius: 8px;
             text-align: center;
-            color: #555;
+            transition: transform 0.3s ease;
         }
-        .tips-list {
-            list-style-type: none;
-            padding: 0;
+        .product-item:hover {
+            transform: scale(1.05);
         }
-        .tips-list li {
-            padding: 10px;
-            background-color: #e9ecef;
+        .product-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin: 5px 0;
+        }
+        .button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
             border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Health & Wellness</h1>
+
+        <!-- Step 1: Pet Selection -->
         <div class="selection">
             <label for="wellness-pet">Choose Your Pet Type:</label>
             <select id="wellness-pet">
@@ -70,55 +84,153 @@
             </select>
         </div>
 
-        <div class="wellness-tips" id="wellness-tips">
-            <h2>Health Tips</h2>
-            <ul class="tips-list" id="tips-list"></ul>
+        <!-- Step 2: Breed Selection (hidden by default) -->
+        <div class="breed-selection" id="breed-selection" style="display:none;">
+            <label for="breed">Choose Your Pet Breed:</label>
+            <select id="breed">
+                <!-- Breeds will be dynamically populated based on pet selection -->
+            </select>
+        </div>
+
+        <!-- Step 3: Product Selection (hidden by default) -->
+        <div class="product-selection" id="product-selection" style="display:none;">
+            <h2>Select Health Products</h2>
+            <div id="product-options"></div>
+        </div>
+
+        <!-- Step 4: Cart -->
+        <div class="cart">
+            <h2>Shopping Cart</h2>
+            <div id="cart-items"></div>
+            <div id="total-price">Total: ₹0</div>
+            <button id="checkout-btn" class="button" style="display:none;">Checkout</button>
         </div>
     </div>
 
     <script>
         const wellnessPetSelect = document.getElementById('wellness-pet');
-        const wellnessTipsDiv = document.getElementById('wellness-tips');
-        const tipsList = document.getElementById('tips-list');
+        const breedSelectDiv = document.getElementById('breed-selection');
+        const breedSelect = document.getElementById('breed');
+        const productSelectionDiv = document.getElementById('product-selection');
+        const productOptionsDiv = document.getElementById('product-options');
+        const cartItemsDiv = document.getElementById('cart-items');
+        const totalPriceDiv = document.getElementById('total-price');
+        const checkoutBtn = document.getElementById('checkout-btn');
 
-        const wellnessOptions = {
+        let cart = {};
+        let total = 0;
+
+        // Breeds based on pet selection
+        const breeds = {
+            dog: ['Labrador', 'German Shepherd', 'Bulldog'],
+            cat: ['Persian', 'Siamese', 'Bengal'],
+            rabbit: ['Holland Lop', 'Mini Rex', 'Lionhead'],
+            turtle: ['Red-Eared Slider', 'Painted Turtle', 'Russian Tortoise']
+        };
+
+        // Health products for pets
+        const healthProducts = {
             dog: [
-                'Regular vet check-ups.',
-                'Daily exercise is essential.',
-                'Provide a balanced diet.'
+                { name: 'Vitamins Supplement', price: 500, image: 'dog-vitamins.jpg' },
+                { name: 'Dental Chews', price: 300, image: 'dog-dental-chews.jpg' }
             ],
             cat: [
-                'Ensure fresh water is always available.',
-                'Regular grooming to reduce shedding.',
-                'Provide scratching posts.'
+                { name: 'Hairball Control', price: 400, image: 'cat-hairball-control.jpg' },
+                { name: 'Flea Treatment', price: 600, image: 'cat-flea-treatment.jpg' }
             ],
             rabbit: [
-                'Fresh hay is crucial for their diet.',
-                'Provide a safe space for them to exercise.',
-                'Regular vet visits for dental health.'
+                { name: 'Nail Clippers', price: 250, image: 'rabbit-nail-clippers.jpg' },
+                { name: 'Grooming Brush', price: 200, image: 'rabbit-grooming-brush.jpg' }
             ],
             turtle: [
-                'Maintain proper water temperature.',
-                'Provide UVB lighting for health.',
-                'Feed a balanced diet with pellets and greens.'
+                { name: 'Water Conditioner', price: 150, image: 'turtle-water-conditioner.jpg' },
+                { name: 'Calcium Block', price: 100, image: 'turtle-calcium-block.jpg' }
             ]
         };
 
+        // Listen to pet selection and display breeds
         wellnessPetSelect.addEventListener('change', function () {
-            const selectedType = this.value;
-            tipsList.innerHTML = ''; // Clear previous tips
-            wellnessTipsDiv.style.display = 'none'; // Hide tips initially
-
-            if (selectedType) {
-                const tips = wellnessOptions[selectedType];
-                tips.forEach(tip => {
-                    const li = document.createElement('li');
-                    li.textContent = tip;
-                    tipsList.appendChild(li);
+            const selectedPet = this.value;
+            if (selectedPet) {
+                // Populate breed options based on selected pet type
+                breedSelect.innerHTML = '';
+                breeds[selectedPet].forEach(breed => {
+                    const option = document.createElement('option');
+                    option.value = breed;
+                    option.textContent = breed;
+                    breedSelect.appendChild(option);
                 });
-                wellnessTipsDiv.style.display = 'block'; // Show tips
+                breedSelectDiv.style.display = 'block'; // Show breed selection
+                productSelectionDiv.style.display = 'none'; // Hide product options until breed is selected
+            } else {
+                breedSelectDiv.style.display = 'none';
+                productSelectionDiv.style.display = 'none';
             }
         });
+
+        // Listen to breed selection and display product options
+        breedSelect.addEventListener('change', function () {
+            const selectedPet = wellnessPetSelect.value;
+            const selectedBreed = this.value;
+            if (selectedBreed) {
+                productOptionsDiv.innerHTML = ''; // Clear previous product options
+                healthProducts[selectedPet].forEach(product => {
+                    const productItem = document.createElement('div');
+                    productItem.classList.add('product-item');
+                    productItem.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <p>Price: ₹${product.price}</p>
+                        <button class="button" onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+                    `;
+                    productOptionsDiv.appendChild(productItem);
+                });
+                productSelectionDiv.style.display = 'block'; // Show product options
+            }
+        });
+
+        // Function to add items to the cart
+        function addToCart(name, price) {
+            if (!cart[name]) {
+                cart[name] = { price, quantity: 1 };
+            } else {
+                cart[name].quantity++;
+            }
+            updateCart();
+        }
+
+        // Function to update the cart display
+        function updateCart() {
+            cartItemsDiv.innerHTML = ''; // Clear previous cart items
+            total = 0;
+
+            for (const name in cart) {
+                const item = cart[name];
+                total += item.price * item.quantity;
+
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `
+                    ${name} (₹${item.price}) x ${item.quantity}
+                    <button class="button" onclick="removeFromCart('${name}')">Remove</button>
+                `;
+                cartItemsDiv.appendChild(cartItem);
+            }
+
+            totalPriceDiv.innerText = `Total: ₹${total}`;
+            checkoutBtn.style.display = total > 0 ? 'inline-block' : 'none'; // Show checkout if cart is not empty
+        }
+
+        // Function to remove items from the cart
+        function removeFromCart(name) {
+            if (cart[name]) {
+                cart[name].quantity--;
+                if (cart[name].quantity <= 0) {
+                    delete cart[name];
+                }
+                updateCart();
+            }
+        }
     </script>
 </body>
 </html>
