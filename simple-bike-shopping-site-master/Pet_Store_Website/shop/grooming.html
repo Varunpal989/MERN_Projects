@@ -22,43 +22,57 @@
             margin-top: 20px;
             color: #333;
         }
-        .selection {
+        .selection, .breed-selection, .product-selection, .cart {
             margin: 40px 0;
             text-align: center;
         }
-        select {
+        select, button {
             padding: 10px;
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            margin: 10px;
         }
-        .grooming-tips {
-            display: none;
-            margin-top: 20px;
+        .product-item {
+            display: inline-block;
+            width: 30%;
+            margin: 10px;
             padding: 20px;
             background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .grooming-tips h2 {
+            border: 1px solid #ddd;
+            border-radius: 8px;
             text-align: center;
-            color: #555;
+            transition: transform 0.3s ease;
         }
-        .tips-list {
-            list-style-type: none;
-            padding: 0;
+        .product-item:hover {
+            transform: scale(1.05);
         }
-        .tips-list li {
-            padding: 10px;
-            background-color: #e9ecef;
+        .product-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin: 5px 0;
+        }
+        .button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
             border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Grooming & Care</h1>
+
+        <!-- Step 1: Pet Selection -->
         <div class="selection">
             <label for="grooming-pet">Choose Your Pet Type:</label>
             <select id="grooming-pet">
@@ -70,54 +84,157 @@
             </select>
         </div>
 
-        <div class="grooming-tips" id="grooming-tips">
-            <h2>Grooming Tips</h2>
-            <ul class="tips-list" id="grooming-list"></ul>
+        <!-- Step 2: Breed Selection -->
+        <div class="breed-selection" id="breed-selection" style="display:none;">
+            <label for="breed">Choose Your Pet Breed:</label>
+            <select id="breed"></select>
+        </div>
+
+        <!-- Step 3: Product Selection -->
+        <div class="product-selection" id="product-selection">
+            <h2>Select Grooming Products</h2>
+            <div id="product-options"></div>
+        </div>
+
+        <!-- Step 4: Cart -->
+        <div class="cart">
+            <h2>Shopping Cart</h2>
+            <div id="cart-items"></div>
+            <div id="total-price">Total: ₹0</div>
+            <button id="checkout-btn" class="button" style="display:none;">Checkout</button>
         </div>
     </div>
 
     <script>
         const groomingPetSelect = document.getElementById('grooming-pet');
-        const groomingTipsDiv = document.getElementById('grooming-tips');
-        const groomingList = document.getElementById('grooming-list');
+        const breedSelectDiv = document.getElementById('breed-selection');
+        const breedSelect = document.getElementById('breed');
+        const productSelectionDiv = document.getElementById('product-selection');
+        const productOptionsDiv = document.getElementById('product-options');
+        const cartItemsDiv = document.getElementById('cart-items');
+        const totalPriceDiv = document.getElementById('total-price');
+        const checkoutBtn = document.getElementById('checkout-btn');
 
+        let cart = {};
+        let total = 0;
+
+        // Breeds based on pet selection
+        const breeds = {
+            dog: ['Labrador', 'German Shepherd', 'Bulldog'],
+            cat: ['Persian', 'Siamese', 'Bengal'],
+            rabbit: ['Holland Lop', 'Mini Rex', 'Lionhead'],
+            turtle: ['Red-Eared Slider', 'Painted Turtle', 'Russian Tortoise']
+        };
+
+        // Products for pets
         const groomingOptions = {
             dog: [
-                'Brush your dog regularly to prevent matting.',
-                'Keep nails trimmed to avoid discomfort.',
-                'Regular baths to keep their coat healthy.'
+                { name: 'Dog Shampoo', price: 300, image: 'grooming-images/dog-shampoo.jpg' },
+                { name: 'Grooming Brush', price: 200, image: 'grooming-images/dog-brush.jpg' }
             ],
             cat: [
-                'Brush fur to reduce shedding and hairballs.',
-                'Clean ears and check for wax buildup.',
-                'Trim nails regularly to prevent scratching.'
+                { name: 'Cat Shampoo', price: 400, image: 'grooming-images/cat-shampoo.jpg' },
+                { name: 'Nail Clippers', price: 150, image: 'grooming-images/cat-clippers.jpg' }
             ],
             rabbit: [
-                'Brush fur to prevent matting.',
-                'Check their teeth and trim if necessary.',
-                'Clean their living area regularly.'
+                { name: 'Rabbit Grooming Brush', price: 200, image: 'grooming-images/rabbit-brush.jpg' },
+                { name: 'Nail Clippers', price: 100, image: 'grooming-images/rabbit-clippers.jpg' }
             ],
             turtle: [
-                'Regularly clean the tank.',
-                'Check shell for any signs of issues.',
-                'Ensure proper diet to maintain health.'
+                { name: 'Shell Care Spray', price: 300, image: 'grooming-images/turtle-spray.jpg' },
+                { name: 'Water Conditioner', price: 150, image: 'grooming-images/turtle-water-conditioner.jpg' }
             ]
         };
 
+        // Listen to pet selection and display breeds
         groomingPetSelect.addEventListener('change', function () {
-            const selectedType = this.value;
-            groomingList.innerHTML = ''; // Clear previous tips
-            groomingTipsDiv.style.display = 'none'; // Hide tips initially
-
-            if (selectedType) {
-                const tips = groomingOptions[selectedType];
-                tips.forEach(tip => {
-                    const li = document.createElement('li');
-                    li.textContent = tip;
-                    groomingList.appendChild(li);
+            const selectedPet = this.value;
+            if (selectedPet) {
+                // Populate breed options based on selected pet type
+                breedSelect.innerHTML = '';
+                breeds[selectedPet].forEach(breed => {
+                    const option = document.createElement('option');
+                    option.value = breed;
+                    option.textContent = breed;
+                    breedSelect.appendChild(option);
                 });
-                groomingTipsDiv.style.display = 'block'; // Show tips
+                breedSelectDiv.style.display = 'block'; // Show breed selection
+                productSelectionDiv.style.display = 'none';
+            } else {
+                breedSelectDiv.style.display = 'none';
+                productSelectionDiv.style.display = 'none';
             }
+        });
+
+        // Listen to breed selection and display products
+        breedSelect.addEventListener('change', function () {
+            const selectedPet = groomingPetSelect.value;
+            const selectedBreed = this.value;
+            if (selectedBreed) {
+                const products = groomingOptions[selectedPet];
+
+                // Display products
+                productOptionsDiv.innerHTML = '';
+                products.forEach(product => {
+                    const productItem = document.createElement('div');
+                    productItem.classList.add('product-item');
+                    productItem.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <p>Price: ₹${product.price}</p>
+                        <button class="button add-to-cart-btn" data-name="${product.name}" data-price="${product.price}">Add to Cart</button>
+                    `;
+                    productOptionsDiv.appendChild(productItem);
+                });
+                productSelectionDiv.style.display = 'block';
+
+                // Add event listener to "Add to Cart" buttons
+                document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        const name = this.dataset.name;
+                        const price = parseInt(this.dataset.price);
+                        addToCart(name, price);
+                    });
+                });
+            }
+        });
+
+        // Add item to cart
+        function addToCart(itemName, itemPrice) {
+            if (!cart[itemName]) {
+                cart[itemName] = { price: itemPrice, quantity: 1 };
+            } else {
+                cart[itemName].quantity++;
+            }
+            updateCart();
+        }
+
+        // Update cart
+        function updateCart() {
+            cartItemsDiv.innerHTML = '';
+            total = 0;
+            for (const [itemName, itemDetails] of Object.entries(cart)) {
+                const { price, quantity } = itemDetails;
+                total += price * quantity;
+
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `
+                    <span>${itemName} (x${quantity})</span>
+                    <span>₹${price * quantity}</span>
+                `;
+                cartItemsDiv.appendChild(cartItem);
+            }
+
+            totalPriceDiv.textContent = `Total: ₹${total}`;
+            checkoutBtn.style.display = total > 0 ? 'block' : 'none';
+        }
+
+        // Checkout functionality
+        checkoutBtn.addEventListener('click', function () {
+            alert(`Your total is ₹${total}. Proceeding to checkout...`);
+            cart = {}; // Clear cart after checkout
+            updateCart();
         });
     </script>
 </body>
